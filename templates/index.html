@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WakeUp - Smart Alarm Clock</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<!-- Animated Background Elements -->
+<div class="bg-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+</div>
+
+<!-- Mobile Menu Toggle -->
+<button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+    <span></span>
+    <span></span>
+    <span></span>
+</button>
+
+<!-- Overlay for mobile menu -->
+<div class="mobile-overlay" id="mobileOverlay"></div>
+
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+        <div class="logo-icon">⏰</div>
+        <div class="logo-text">WakeUp</div>
+    </div>
+    <div class="nav-links">
+        <div class="nav-link active" data-page="setAlarm">
+            <div class="nav-icon">➕</div>
+            <span class="nav-label">Set Alarm</span>
+            <div class="nav-indicator"></div>
+        </div>
+        <div class="nav-link" data-page="myAlarms">
+            <div class="nav-icon">📋</div>
+            <span class="nav-label">Your Alarms</span>
+            <div class="nav-indicator"></div>
+        </div>
+        <div class="nav-link" data-page="statistics">
+            <div class="nav-icon">📊</div>
+            <span class="nav-label">Statistics</span>
+            <div class="nav-indicator"></div>
+        </div>
+    </div>
+</div>
+
+<div class="main">
+    <div class="header">
+        <div class="header-left">
+            <div class="header-title-wrapper">
+                <h1>⏰ WakeUp</h1>
+                <div class="title-glow"></div>
+            </div>
+            <div class="tagline">Smart Alarm Clock — prove you're awake</div>
+        </div>
+        <div class="header-right" id="loginArea">
+            <div class="input-wrapper">
+                <input type="tel" id="phoneInput" placeholder="Phone number">
+                <div class="input-glow"></div>
+            </div>
+            <button class="btn-animated" onclick="registerOrLogin()">
+                <span>Register / Login</span>
+                <div class="btn-glow"></div>
+            </button>
+        </div>
+        <div class="header-right" id="loggedArea" style="display:none;">
+            <div class="user-phone-box">
+                <span class="phone-icon">📱</span>
+                <span id="userPhone"></span>
+                <div class="phone-box-glow"></div>
+            </div>
+            <button class="logout-btn btn-animated" onclick="logout()">
+                <span>Logout</span>
+                <div class="btn-glow"></div>
+            </button>
+        </div>
+    </div>
+
+    <div class="clock-container">
+        <div class="clock-display" id="currentTime">00:00:00</div>
+        <div class="clock-glow"></div>
+    </div>
+
+    <!-- Set Alarm Page -->
+    <div id="setAlarm" class="page page-card active">
+        <div class="card-header">
+            <h2>➕ Set New Alarm</h2>
+            <div class="header-line"></div>
+        </div>
+        <form id="alarmForm">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="alarmTime">
+                        <span class="label-icon">⏰</span>
+                        <span>Time</span>
+                    </label>
+                    <div class="time-input-wrapper">
+                        <div class="input-with-glow">
+                            <input type="time" id="alarmTime" required>
+                            <div class="input-border-glow"></div>
+                        </div>
+                        <div class="input-with-glow ampm-select">
+                            <select id="ampm">
+                                <option>AM</option>
+                                <option>PM</option>
+                            </select>
+                            <div class="input-border-glow"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="alarmLabel">
+                        <span class="label-icon">🏷️</span>
+                        <span>Label</span>
+                    </label>
+                    <div class="input-with-glow">
+                        <input type="text" id="alarmLabel" placeholder="Wake up!" required>
+                        <div class="input-border-glow"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <label>
+                    <span class="label-icon">🎵</span>
+                    <span>Alarm Sound</span>
+                </label>
+                <div class="input-with-glow">
+                    <select id="alarmSound">
+                        <option value="default">Default Beep</option>
+                        <option value="gentle">Gentle Wake</option>
+                        <option value="intense">Intense</option>
+                        <option value="birds">Birds Chirping</option>
+                    </select>
+                    <div class="input-border-glow"></div>
+                </div>
+
+                <div class="hint-text">Or choose your upload below</div>
+
+                <label class="secondary-label">Uploaded Sounds</label>
+                <div class="input-with-glow">
+                    <select id="userSoundsSelect">
+                        <option value="">— Choose uploaded sound —</option>
+                    </select>
+                    <div class="input-border-glow"></div>
+                </div>
+
+                <button type="button" class="btn-secondary btn-animated" onclick="openUploadModal()">
+                    <span>📤 Upload Sound</span>
+                    <div class="btn-glow"></div>
+                </button>
+            </div>
+
+            <div class="form-section">
+                <label>
+                    <span class="label-icon">🧩</span>
+                    <span>Wake-up Challenge</span>
+                </label>
+                <div class="input-with-glow">
+                    <select id="challengeType">
+                        <option value="sentence">Type a Sentence</option>
+                        <option value="math">Solve Math Problem</option>
+                    </select>
+                    <div class="input-border-glow"></div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-primary btn-animated btn-large">
+                <span>✨ Create Alarm</span>
+                <div class="btn-glow"></div>
+            </button>
+        </form>
+    </div>
+
+    <!-- Alarms Page -->
+    <div id="myAlarms" class="page page-card">
+        <div class="card-header">
+            <h2>📋 Your Alarms</h2>
+            <div class="header-line"></div>
+        </div>
+        <div class="alarm-list" id="alarmList">
+            <p class="empty-state">No alarms yet. Create your first alarm!</p>
+        </div>
+    </div>
+
+    <!-- Statistics Page -->
+    <div id="statistics" class="page page-card">
+        <div class="card-header">
+            <h2>📊 Wake-up Statistics</h2>
+            <div class="header-line"></div>
+        </div>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">🎯</div>
+                <div class="stat-value" id="statTotal">0</div>
+                <div class="stat-label">Total Alarms</div>
+                <div class="stat-card-glow"></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">✅</div>
+                <div class="stat-value" id="statSuccess">0</div>
+                <div class="stat-label">Successful Wake-ups</div>
+                <div class="stat-card-glow"></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">❌</div>
+                <div class="stat-value" id="statFailed">0</div>
+                <div class="stat-label">Failed Attempts</div>
+                <div class="stat-card-glow"></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🔥</div>
+                <div class="stat-value" id="statStreak">0</div>
+                <div class="stat-label">Current Streak</div>
+                <div class="stat-card-glow"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Toast Notification Container -->
+<div id="toastContainer"></div>
+
+<script src="/static/js/main.js"></script>
+</body>
+</html>

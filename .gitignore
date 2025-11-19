@@ -1,0 +1,36 @@
+     # Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+
+# Virtual environment
+.venv/
+venv/
+ENV/
+
+# PyCharm settings
+.idea/
+*.iml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Local databases (ignore all)
+*.db
+alarm.db
+alarmclock.db
+wakeup.db
+alarmdb/
+
+# Uploads folder (runtime data)
+uploads/
+
+# Logs
+*.log
+
+# DO NOT ignore static/sounds — keep them tracked
